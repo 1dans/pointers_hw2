@@ -1,20 +1,64 @@
-// pointers_hw2.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+using namespace std;
+
+void fillArray(int* ptr, int size) {
+	for (int i = 0; i < size; ++i) {
+		ptr[i] = rand() % 10;
+	}
+}
+
+void displayArray(int* ptr, int size) {
+	for (int i = 0; i < size; ++i) {
+		cout << ptr[i] << ' ';
+	}
+	cout << endl;
+}
+
+
+
+
+void del(int* ptr) {
+	delete[] ptr;
+}
+
+void findDifferentElements(int* ptr, int* p, int size_ptr, int size_p) { // #1
+	int* c_temp = new int[size_ptr > size_p ? size_ptr : size_p];
+	int size = 0;
+	for (int i = 0; i < size_ptr; ++i) {
+		bool f = false;
+		for (int j = 0; j < size_p; ++j)
+		{
+			if (ptr[i] == p[j]) { f = true; break; }
+		}
+		if (!f) {
+			bool d = false;
+			for (int k = 0; k < size; ++k)
+			{
+				if (c_temp[k] == ptr[i]) { d = true; break; }
+			} if (!d) { c_temp[size++] = ptr[i]; }
+		}
+	}
+	int* c = new int[size];
+	for (int i = 0; i < size; ++i) c[i] = c_temp[i];
+	displayArray(c, size);
+	del(c);
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	srand(time(nullptr));
+	int m, n;
+	cout << "Enter size of array A and B: ";
+	cin >> m >> n;
+	int* a = new int[m];
+	int* b= new int[n];
+	fillArray(a, m);
+	fillArray(b, n);
+	displayArray(a, m);
+	displayArray(b, n);
+	findDifferentElements(a, b, m, n);
+
+	del(a);
+	del(b);
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
